@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+tsconfig.tsbuildinfo
 *.local
 
 # npm lockfile (project uses pnpm)
@@ -28,3 +29,4 @@ package-lock.json
 
 # Vue Router auto-generated
 typed-router.d.ts
+*.tsbuildinfo

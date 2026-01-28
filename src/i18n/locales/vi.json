@@ -1,0 +1,68 @@
+{
+    "common": {
+        "loading": "Đang tải...",
+        "error": "Đã xảy ra lỗi",
+        "save": "Lưu",
+        "cancel": "Hủy",
+        "delete": "Xóa",
+        "edit": "Sửa",
+        "create": "Tạo mới",
+        "search": "Tìm kiếm",
+        "noData": "Không có dữ liệu"
+    },
+    "nav": {
+        "home": "Trang chủ",
+        "about": "Giới thiệu",
+        "posts": "Bài viết"
+    },
+    "home": {
+        "title": "Trang chủ",
+        "demoTitle": "Demo TanStack Query",
+        "welcomeMessage": "Chào mừng đến với Vue + TanStack!",
+        "loadedAt": "Tải lúc",
+        "technologiesTitle": "Công nghệ sử dụng",
+        "technologies": {
+            "vue": "Vue 3 với Composition API",
+            "typescript": "TypeScript đảm bảo an toàn kiểu dữ liệu",
+            "tailwind": "Tailwind CSS cho giao diện",
+            "tanstackQuery": "TanStack Query để fetch dữ liệu",
+            "tanstackRouter": "TanStack Router cho routing dựa trên file"
+        }
+    },
+    "about": {
+        "title": "Giới thiệu",
+        "description": "Đây là ứng dụng Vue.js Client-Side Rendering (CSR) được xây dựng với các công nghệ hiện đại.",
+        "featuresTitle": "Tính năng dự án",
+        "features": {
+            "typescript": {
+                "title": "TypeScript",
+                "description": "An toàn kiểu dữ liệu trong toàn bộ ứng dụng"
+            },
+            "tailwind": {
+                "title": "Tailwind CSS",
+                "description": "Framework CSS utility-first để phát triển UI nhanh chóng"
+            },
+            "tanstackQuery": {
+                "title": "TanStack Query",
+                "description": "Đồng bộ hóa và caching dữ liệu mạnh mẽ"
+            },
+            "tanstackRouter": {
+                "title": "TanStack Router",
+                "description": "Hệ thống routing an toàn kiểu, dựa trên file"
+            }
+        }
+    },
+    "posts": {
+        "title": "Bài viết",
+        "loading": "Đang tải bài viết...",
+        "errorLoading": "Lỗi khi tải bài viết",
+        "readMore": "Xem thêm →",
+        "noPostsFound": "Không tìm thấy bài viết",
+        "backToPosts": "← Quay lại Bài viết",
+        "loadingPost": "Đang tải bài viết...",
+        "errorLoadingPost": "Lỗi khi tải bài viết",
+        "postNotFound": "Không tìm thấy bài viết",
+        "postNumber": "Bài #",
+        "authorId": "ID Tác giả"
+    }
+}
