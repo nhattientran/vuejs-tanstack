@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
     "@tanstack/vue-query": "^5.92.9",
     "@tanstack/vue-table": "^8.21.3",
     "@vueuse/core": "^14.1.0",
@@ -18,7 +19,7 @@
     "lucide-vue-next": "^0.563.0",
     "reka-ui": "^2.7.0",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss": "^4.1.18",
     "vue": "^3.5.13",
     "vue-i18n": "^11.2.8",
     "vue-router": "^4.6.4"
@@ -26,9 +27,6 @@
   "devDependencies": {
     "@types/node": "^25.0.10",
     "@vitejs/plugin-vue": "^5.2.1",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
     "typescript": "~5.6.2",
     "unplugin-vue-router": "^0.19.2",
     "vite": "^6.0.5",

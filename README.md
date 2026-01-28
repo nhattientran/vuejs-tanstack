@@ -1,16 +1,19 @@
 # Vue.js + TanStack Query Project
 
-A Vue.js Client-Side Rendering project with TypeScript, Tailwind CSS, TanStack Query, and unplugin-vue-router.
+A Vue.js Client-Side Rendering project with TypeScript, Tailwind CSS v4, TanStack Query, shadcn-vue, and vue-i18n.
 
 ## Technologies Used
 
 - **Vue 3** - Progressive JavaScript framework
 - **TypeScript** - Type-safe JavaScript
 - **Vite** - Next generation frontend tooling
-- **Tailwind CSS** - Utility-first CSS framework
+- **Tailwind CSS v4** - Utility-first CSS framework (with Vite plugin)
 - **TanStack Query** - Powerful data synchronization for server state
 - **Vue Router** - Official router for Vue.js
 - **unplugin-vue-router** - Type-safe, file-based routing plugin
+- **shadcn-vue** - Re-usable UI components built with Reka UI and Tailwind
+- **vue-i18n** - Internationalization plugin for Vue.js
+- **axios** - HTTP client for API requests
 
 ## Installation
 
@@ -42,6 +45,20 @@ pnpm preview
 
 ```
 src/
+├── components/
+│   └── ui/              # shadcn-vue components
+│       ├── button/
+│       ├── card/
+│       ├── input/
+│       └── label/
+├── i18n/
+│   ├── index.ts         # i18n configuration
+│   └── locales/
+│       ├── en.json      # English translations
+│       └── vi.json      # Vietnamese translations
+├── lib/
+│   ├── axios.ts         # Axios configuration with interceptors
+│   └── utils.ts         # Utility functions (cn helper)
 ├── pages/               # File-based routing
 │   ├── index.vue        # Home page (/)
 │   ├── about.vue        # About page (/about)
@@ -50,7 +67,85 @@ src/
 │       └── [id].vue     # Post detail (/posts/:id)
 ├── App.vue              # Main app component with layout
 ├── main.ts              # Application entry point
-└── style.css            # Global styles with Tailwind
+└── style.css            # Global styles with Tailwind v4 theme
+```
+
+## Features
+
+### Internationalization (i18n)
+
+The app supports multiple languages with vue-i18n:
+
+```vue
+<script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
+
+// Switch language
+const switchLocale = (lang: 'en' | 'vi') => {
+  locale.value = lang
+  localStorage.setItem('locale', lang)
+}
+</script>
+
+<template>
+  <p>{{ t('common.loading') }}</p>
+</template>
+```
+
+### shadcn-vue Components
+
+Pre-installed UI components:
+
+```vue
+<script setup>
+import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Form</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <Label>Email</Label>
+      <Input type="email" placeholder="Enter email" />
+      <Button>Submit</Button>
+    </CardContent>
+  </Card>
+</template>
+```
+
+Add more components:
+```bash
+npx shadcn-vue@latest add [component-name]
+```
+
+### Axios HTTP Client
+
+Configured with interceptors for auth and error handling:
+
+```typescript
+import { http } from '@/lib/axios'
+
+// GET request
+const posts = await http.get<Post[]>('/posts')
+
+// POST request
+const newPost = await http.post<Post>('/posts', { title: 'New Post' })
+```
+
+### Path Aliases
+
+Use `@` to import from `src/`:
+
+```typescript
+import { http } from '@/lib/axios'
+import { Button } from '@/components/ui/button'
 ```
 
 ## File-based Routing
@@ -72,69 +167,51 @@ unplugin-vue-router automatically generates routes from the `src/pages` director
 - Nested routes support
 - Route meta information
 
-### Generated Files
-
-The plugin automatically generates:
-- `typed-router.d.ts` - Type definitions for routes (added to .gitignore)
-- Auto-routes imported in `main.ts`
-
 ## TanStack Query
 
-TanStack Query (Vue Query) is pre-configured for server state management. See examples in:
-
-- `src/pages/index.vue` - Simple query example
-- `src/pages/posts/index.vue` - Fetching list data from API
-- `src/pages/posts/[id].vue` - Fetching single item with dynamic params
-
-### Features
-
-- Automatic caching and refetching
-- Loading and error states
-- Optimistic updates
-- Infinite queries support
-- Devtools integration (optional)
-
-### Usage Example
+TanStack Query (Vue Query) is pre-configured for server state management:
 
 ```vue
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
+import { http } from '@/lib/axios'
 
-const { data, isLoading, error } = useQuery({
+interface Post {
+  id: number
+  title: string
+  body: string
+}
+
+const { data, isLoading, error } = useQuery<Post[]>({
   queryKey: ['posts'],
-  queryFn: async () => {
-    const response = await fetch('https://api.example.com/posts')
-    return response.json()
-  }
+  queryFn: () => http.get<Post[]>('/posts')
 })
 </script>
 ```
 
-## Tailwind CSS
+## Tailwind CSS v4
 
-Tailwind is configured and ready to use. CSS utilities can be used directly in templates.
+Tailwind v4 is configured with the Vite plugin. No PostCSS configuration needed.
 
 ### Configuration
 
-- `tailwind.config.js` - Tailwind configuration
-- `postcss.config.js` - PostCSS configuration
-- `src/style.css` - Global styles with Tailwind directives
+- `vite.config.ts` - Tailwind Vite plugin
+- `src/style.css` - Theme configuration with `@theme` directive
 
-### Usage
+### Custom Colors (shadcn theme)
 
-```vue
-<template>
-  <div class="container mx-auto px-4">
-    <h1 class="text-4xl font-bold text-blue-600">
-      Hello World
-    </h1>
-  </div>
-</template>
+```css
+@theme {
+  --color-background: hsl(0 0% 100%);
+  --color-primary: hsl(0 0% 9%);
+  --color-muted-foreground: hsl(0 0% 45.1%);
+  /* ... */
+}
 ```
 
 ## TypeScript
 
-The project is configured with TypeScript strict mode to ensure maximum type safety.
+The project is configured with TypeScript strict mode for maximum type safety.
 
 ### Type Safety Features
 
@@ -145,10 +222,9 @@ The project is configured with TypeScript strict mode to ensure maximum type saf
 
 ### Configuration Files
 
-- `tsconfig.json` - Base TypeScript config
+- `tsconfig.json` - Base TypeScript config with path aliases
 - `tsconfig.app.json` - App-specific config
 - `src/vite-env.d.ts` - Vite environment types
-- `typed-router.d.ts` - Auto-generated route types (created by unplugin-vue-router)
 
 ## Development
 
@@ -166,48 +242,10 @@ pnpm preview # Preview production build
 2. Routes will be automatically generated
 3. Use `RouterLink` to navigate
 
-Example:
-```vue
-<!-- src/pages/contact.vue -->
-<template>
-  <div>Contact Page</div>
-</template>
-```
+### Adding shadcn-vue Components
 
-The route will be automatically available at `/contact`
-
-### Adding Dynamic Routes
-
-```vue
-<!-- src/pages/users/[id].vue -->
-<script setup lang="ts">
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
-const userId = route.params.id
-</script>
-```
-
-## Project Structure Details
-
-```
-vuejs-tanstack/
-├── src/
-│   ├── pages/              # File-based routes
-│   ├── assets/             # Static assets
-│   ├── App.vue             # Root component with navigation
-│   ├── main.ts             # App entry point
-│   ├── style.css           # Global styles
-│   └── vite-env.d.ts       # Type definitions
-├── public/                 # Public static files
-├── .gitignore              # Git ignore rules
-├── index.html              # HTML entry point
-├── package.json            # Dependencies
-├── postcss.config.js       # PostCSS config
-├── tailwind.config.js      # Tailwind config
-├── tsconfig.json           # TypeScript config
-├── tsconfig.app.json       # App TypeScript config
-└── vite.config.ts          # Vite config with unplugin-vue-router
+```bash
+npx shadcn-vue@latest add button input card dialog
 ```
 
 ## Dependencies
@@ -215,13 +253,18 @@ vuejs-tanstack/
 ### Production
 - `vue` - Vue.js framework
 - `vue-router` - Official router
+- `vue-i18n` - Internationalization
 - `@tanstack/vue-query` - Data fetching and caching
+- `@tanstack/vue-table` - Table component
+- `axios` - HTTP client
+- `tailwindcss` - CSS framework (v4)
+- `@tailwindcss/vite` - Tailwind Vite plugin
+- `reka-ui` - Headless UI primitives (for shadcn-vue)
 
 ### Development
 - `vite` - Build tool
 - `typescript` - Type safety
 - `unplugin-vue-router` - File-based routing
-- `tailwindcss` - CSS framework
 - `@vitejs/plugin-vue` - Vite Vue plugin
 
 ## Resources
@@ -230,5 +273,7 @@ vuejs-tanstack/
 - [TanStack Query (Vue)](https://tanstack.com/query/latest/docs/vue/overview)
 - [unplugin-vue-router](https://github.com/posva/unplugin-vue-router)
 - [Vue Router](https://router.vuejs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
+- [Tailwind CSS v4](https://tailwindcss.com/)
+- [shadcn-vue](https://www.shadcn-vue.com/)
+- [vue-i18n](https://vue-i18n.intlify.dev/)
 - [Vite](https://vitejs.dev/)
