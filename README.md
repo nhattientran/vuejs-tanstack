@@ -1,8 +1,8 @@
 # Vue.js + TanStack Query Project
 
-Dự án Vue.js Client-Side Rendering với TypeScript, Tailwind CSS, TanStack Query và unplugin-vue-router.
+A Vue.js Client-Side Rendering project with TypeScript, Tailwind CSS, TanStack Query, and unplugin-vue-router.
 
-## Công nghệ sử dụng
+## Technologies Used
 
 - **Vue 3** - Progressive JavaScript framework
 - **TypeScript** - Type-safe JavaScript
@@ -12,19 +12,19 @@ Dự án Vue.js Client-Side Rendering với TypeScript, Tailwind CSS, TanStack Q
 - **Vue Router** - Official router for Vue.js
 - **unplugin-vue-router** - Type-safe, file-based routing plugin
 
-## Cài đặt
+## Installation
 
 ```bash
 pnpm install
 ```
 
-## Chạy Development Server
+## Running Development Server
 
 ```bash
 pnpm dev
 ```
 
-Server sẽ chạy tại: http://localhost:5173
+The server will run at: http://localhost:5173
 
 ## Build Production
 
@@ -38,7 +38,7 @@ pnpm build
 pnpm preview
 ```
 
-## Cấu trúc Project
+## Project Structure
 
 ```
 src/
@@ -55,41 +55,41 @@ src/
 
 ## File-based Routing
 
-unplugin-vue-router tự động generate routes từ thư mục `src/pages`:
+unplugin-vue-router automatically generates routes from the `src/pages` directory:
 
 ### Naming Conventions
 
-- `index.vue` - Trang chủ tại `/`
-- `about.vue` - Trang about tại `/about`
-- `posts/index.vue` - Danh sách posts tại `/posts`
-- `posts/[id].vue` - Chi tiết post tại `/posts/:id` (dynamic route)
+- `index.vue` - Home page at `/`
+- `about.vue` - About page at `/about`
+- `posts/index.vue` - Posts list at `/posts`
+- `posts/[id].vue` - Post details at `/posts/:id` (dynamic route)
 
 ### Features
 
-- Type-safe routing với auto-generated types
-- Auto-import routes vào Vue Router
-- Dynamic routes với `[param]` syntax
+- Type-safe routing with auto-generated types
+- Auto-import routes into Vue Router
+- Dynamic routes with `[param]` syntax
 - Nested routes support
 - Route meta information
 
 ### Generated Files
 
-Plugin sẽ tự động generate:
-- `typed-router.d.ts` - Type definitions cho routes (đã thêm vào .gitignore)
-- Auto-routes được import trong `main.ts`
+The plugin automatically generates:
+- `typed-router.d.ts` - Type definitions for routes (added to .gitignore)
+- Auto-routes imported in `main.ts`
 
 ## TanStack Query
 
-TanStack Query (Vue Query) được cấu hình sẵn để quản lý server state. Xem ví dụ trong:
+TanStack Query (Vue Query) is pre-configured for server state management. See examples in:
 
 - `src/pages/index.vue` - Simple query example
-- `src/pages/posts/index.vue` - Fetching list data từ API
-- `src/pages/posts/[id].vue` - Fetching single item với dynamic params
+- `src/pages/posts/index.vue` - Fetching list data from API
+- `src/pages/posts/[id].vue` - Fetching single item with dynamic params
 
 ### Features
 
-- Automatic caching và refetching
-- Loading và error states
+- Automatic caching and refetching
+- Loading and error states
 - Optimistic updates
 - Infinite queries support
 - Devtools integration (optional)
@@ -112,13 +112,13 @@ const { data, isLoading, error } = useQuery({
 
 ## Tailwind CSS
 
-Tailwind đã được cấu hình và sẵn sàng sử dụng. CSS utilities có thể dùng trực tiếp trong templates.
+Tailwind is configured and ready to use. CSS utilities can be used directly in templates.
 
 ### Configuration
 
 - `tailwind.config.js` - Tailwind configuration
 - `postcss.config.js` - PostCSS configuration
-- `src/style.css` - Global styles với Tailwind directives
+- `src/style.css` - Global styles with Tailwind directives
 
 ### Usage
 
@@ -134,13 +134,13 @@ Tailwind đã được cấu hình và sẵn sàng sử dụng. CSS utilities c�
 
 ## TypeScript
 
-Project đã được cấu hình với TypeScript strict mode để đảm bảo type safety tối đa.
+The project is configured with TypeScript strict mode to ensure maximum type safety.
 
 ### Type Safety Features
 
 - Strict type checking enabled
-- Auto-generated route types từ unplugin-vue-router
-- Type-safe API responses với TanStack Query
+- Auto-generated route types from unplugin-vue-router
+- Type-safe API responses with TanStack Query
 - Vue 3 Composition API types
 
 ### Configuration Files
@@ -162,9 +162,9 @@ pnpm preview # Preview production build
 
 ### Adding New Routes
 
-1. Tạo file `.vue` trong `src/pages/`
-2. Routes sẽ tự động được generate
-3. Sử dụng `RouterLink` để navigate
+1. Create a `.vue` file in `src/pages/`
+2. Routes will be automatically generated
+3. Use `RouterLink` to navigate
 
 Example:
 ```vue
@@ -174,7 +174,7 @@ Example:
 </template>
 ```
 
-Route sẽ tự động available tại `/contact`
+The route will be automatically available at `/contact`
 
 ### Adding Dynamic Routes
 
@@ -195,7 +195,7 @@ vuejs-tanstack/
 ├── src/
 │   ├── pages/              # File-based routes
 │   ├── assets/             # Static assets
-│   ├── App.vue             # Root component với navigation
+│   ├── App.vue             # Root component with navigation
 │   ├── main.ts             # App entry point
 │   ├── style.css           # Global styles
 │   └── vite-env.d.ts       # Type definitions
@@ -207,7 +207,7 @@ vuejs-tanstack/
 ├── tailwind.config.js      # Tailwind config
 ├── tsconfig.json           # TypeScript config
 ├── tsconfig.app.json       # App TypeScript config
-└── vite.config.ts          # Vite config với unplugin-vue-router
+└── vite.config.ts          # Vite config with unplugin-vue-router
 ```
 
 ## Dependencies
@@ -215,7 +215,7 @@ vuejs-tanstack/
 ### Production
 - `vue` - Vue.js framework
 - `vue-router` - Official router
-- `@tanstack/vue-query` - Data fetching và caching
+- `@tanstack/vue-query` - Data fetching and caching
 
 ### Development
 - `vite` - Build tool
