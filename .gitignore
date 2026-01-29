@@ -30,3 +30,4 @@ package-lock.json
 # Vue Router auto-generated
 typed-router.d.ts
 *.tsbuildinfo
+/.shared

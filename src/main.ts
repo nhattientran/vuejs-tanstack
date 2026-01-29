@@ -1,5 +1,6 @@
 /// <reference types="unplugin-vue-router/client" />
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "vue-router/auto-routes";
@@ -14,6 +15,7 @@ const router = createRouter({
 });
 
 const app = createApp(App);
+app.use(createPinia());
 app.use(i18n);
 app.use(VueQueryPlugin);
 app.use(router);
