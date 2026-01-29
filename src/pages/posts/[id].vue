@@ -3,26 +3,20 @@ import { useQuery } from '@tanstack/vue-query'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import { http } from '@/lib/axios'
+import { postsRepository } from '@/repositories'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
 const { t } = useI18n()
 
-interface Post {
-  id: number
-  title: string
-  body: string
-  userId: number
-}
-
 const route = useRoute()
-const postId = computed(() => (route.params as { id: string }).id)
+const postId = computed(() => Number((route.params as { id: string }).id))
 
-// Fetch single post using TanStack Query
-const { data: post, isLoading, error } = useQuery<Post>({
+// Fetch single post using TanStack Query with repository
+const { data: post, isLoading, error } = useQuery({
   queryKey: ['post', postId],
-  queryFn: () => http.get<Post>(`/posts/${postId.value}`)
+  queryFn: () => postsRepository.getPostById(postId.value),
+  enabled: postId.value > 0
 })
 </script>
 

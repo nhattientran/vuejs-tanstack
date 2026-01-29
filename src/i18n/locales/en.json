@@ -64,5 +64,11 @@
     "postNotFound": "Post not found",
     "postNumber": "Post #",
     "authorId": "Author ID"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "message": "Oops! The page you're looking for doesn't exist.",
+    "backHome": "Back to Home",
+    "goBack": "Go Back"
   }
 }

@@ -65,6 +65,10 @@ src/
 │   └── posts/           # Posts routes
 │       ├── index.vue    # Posts list (/posts)
 │       └── [id].vue     # Post detail (/posts/:id)
+├── repositories/        # API repositories for data fetching
+│   ├── index.ts         # Central export for all repositories
+│   ├── posts.repository.ts   # Posts API methods
+│   └── users.repository.ts   # Users API methods
 ├── App.vue              # Main app component with layout
 ├── main.ts              # Application entry point
 └── style.css            # Global styles with Tailwind v4 theme
@@ -125,6 +129,31 @@ Add more components:
 npx shadcn-vue@latest add [component-name]
 ```
 
+### Repository Pattern for API Calls
+
+API logic is organized using the repository pattern for better maintainability and code reuse:
+
+```typescript
+import { postsRepository } from '@/repositories'
+
+// GET all posts
+const posts = await postsRepository.getPosts({ _limit: 10 })
+
+// GET single post
+const post = await postsRepository.getPostById(1)
+
+// POST new post
+const newPost = await postsRepository.createPost({ userId: 1, title: 'New Post', body: 'Content' })
+
+// PUT update post
+const updated = await postsRepository.updatePost(1, { title: 'Updated Title' })
+
+// DELETE post
+await postsRepository.deletePost(1)
+```
+
+Each repository exports typed interfaces and CRUD methods, keeping API logic centralized and components clean.
+
 ### Axios HTTP Client
 
 Configured with interceptors for auth and error handling:
@@ -132,10 +161,8 @@ Configured with interceptors for auth and error handling:
 ```typescript
 import { http } from '@/lib/axios'
 
-// GET request
+// Direct HTTP requests (use repositories instead)
 const posts = await http.get<Post[]>('/posts')
-
-// POST request
 const newPost = await http.post<Post>('/posts', { title: 'New Post' })
 ```
 
@@ -169,25 +196,35 @@ unplugin-vue-router automatically generates routes from the `src/pages` director
 
 ## TanStack Query
 
-TanStack Query (Vue Query) is pre-configured for server state management:
+TanStack Query (Vue Query) is pre-configured for server state management. Use it with repositories for type-safe data fetching:
 
 ```vue
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { http } from '@/lib/axios'
+import { postsRepository } from '@/repositories'
 
-interface Post {
-  id: number
-  title: string
-  body: string
-}
-
-const { data, isLoading, error } = useQuery<Post[]>({
-  queryKey: ['posts'],
-  queryFn: () => http.get<Post[]>('/posts')
+const { data: posts, isLoading, error } = useQuery({
+  queryKey: ['posts', { limit: 10 }],
+  queryFn: () => postsRepository.getPosts({ _limit: 10 })
 })
 </script>
+
+<template>
+  <div v-if="isLoading">Loading...</div>
+  <div v-else-if="error">Error: {{ error.message }}</div>
+  <div v-else>
+    <div v-for="post in posts" :key="post.id">
+      {{ post.title }}
+    </div>
+  </div>
+</template>
 ```
+
+Benefits:
+- Type-safe API responses from repositories
+- Automatic caching and background synchronization
+- Optimistic updates support
+- Centralized API logic
 
 ## Tailwind CSS v4
 

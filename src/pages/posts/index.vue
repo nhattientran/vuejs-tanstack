@@ -1,22 +1,16 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import { useI18n } from 'vue-i18n'
-import { http } from '@/lib/axios'
+import { postsRepository } from '@/repositories'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
 const { t } = useI18n()
 
-interface Post {
-  id: number
-  title: string
-  body: string
-}
-
-// Fetch posts using TanStack Query
-const { data: posts, isLoading, error } = useQuery<Post[]>({
-  queryKey: ['posts'],
-  queryFn: () => http.get<Post[]>('/posts?_limit=5')
+// Fetch posts using TanStack Query with repository
+const { data: posts, isLoading, error } = useQuery({
+  queryKey: ['posts', { limit: 5 }],
+  queryFn: () => postsRepository.getPosts({ _limit: 5 })
 })
 </script>
 
