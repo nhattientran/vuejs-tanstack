@@ -31,3 +31,4 @@ package-lock.json
 typed-router.d.ts
 *.tsbuildinfo
 /.shared
+/plans
