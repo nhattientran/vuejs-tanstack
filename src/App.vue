@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterView, RouterLink } from "vue-router";
+import { Outlet, Link } from "@tanstack/vue-router";
 import { useI18n } from "vue-i18n";
 
 import { useTheme } from "@/composables/useTheme";
@@ -19,24 +19,24 @@ const switchLocale = (lang: "en" | "vi") => {
       <div class="container mx-auto px-4 py-4">
         <div class="flex gap-4 items-center justify-between">
           <div class="flex gap-4">
-            <RouterLink
+            <Link
               to="/"
               class="text-blue-600 hover:text-blue-800 font-medium"
             >
               {{ t("nav.home") }}
-            </RouterLink>
-            <RouterLink
+            </Link>
+            <Link
               to="/about"
               class="text-blue-600 hover:text-blue-800 font-medium"
             >
               {{ t("nav.about") }}
-            </RouterLink>
-            <RouterLink
+            </Link>
+            <Link
               to="/posts"
               class="text-blue-600 hover:text-blue-800 font-medium"
             >
               {{ t("nav.posts") }}
-            </RouterLink>
+            </Link>
           </div>
           <div class="flex gap-2">
             <button
@@ -73,7 +73,7 @@ const switchLocale = (lang: "en" | "vi") => {
     </nav>
 
     <div class="container mx-auto px-4 py-8">
-      <RouterView />
+      <Outlet />
     </div>
   </div>
 </template>

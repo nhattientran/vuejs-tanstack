@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import { useI18n } from 'vue-i18n'
+import { Link } from '@tanstack/vue-router'
 import { postsRepository } from '@/repositories'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -46,9 +47,9 @@ const { data: posts, isLoading, error } = useQuery({
         </CardContent>
         <CardFooter>
           <Button variant="link" class="px-0" as-child>
-            <a :href="`/posts/${post.id}`">
+            <Link :to="`/posts/${post.id}`">
               {{ t('posts.readMore') }}
-            </a>
+            </Link>
           </Button>
         </CardFooter>
       </Card>

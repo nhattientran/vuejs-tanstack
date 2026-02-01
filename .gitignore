@@ -32,3 +32,4 @@ typed-router.d.ts
 *.tsbuildinfo
 /.shared
 /plans
+src/routeTree.gen.ts

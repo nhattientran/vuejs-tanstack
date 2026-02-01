@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { RouterLink } from 'vue-router';
+import { Link, useRouter } from '@tanstack/vue-router';
 import { Button } from '@/components/ui/button';
 import { ArrowLeftIcon, HomeIcon } from 'lucide-vue-next';
 
 const { t } = useI18n();
+const router = useRouter();
 </script>
 
 <template>
@@ -34,13 +35,13 @@ const { t } = useI18n();
         <!-- Actions -->
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button as-child size="lg" class="w-full sm:w-auto font-semibold shadow-lg hover:shadow-primary/25 transition-all duration-300">
-            <RouterLink to="/">
+            <Link to="/">
               <HomeIcon class="mr-2 h-4 w-4" />
               {{ t('notFound.backHome') }}
-            </RouterLink>
+            </Link>
           </Button>
           
-          <Button variant="ghost" size="lg" class="w-full sm:w-auto" @click="$router.go(-1)">
+          <Button variant="ghost" size="lg" class="w-full sm:w-auto" @click="router.history.back()">
             <ArrowLeftIcon class="mr-2 h-4 w-4" />
             {{ t('notFound.goBack') }}
           </Button>

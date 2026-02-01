@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
+import { Link, useParams } from '@tanstack/vue-router'
 import { postsRepository } from '@/repositories'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
 const { t } = useI18n()
 
-const route = useRoute()
-const postId = computed(() => Number((route.params as { id: string }).id))
+const params = useParams({ from: '/posts/$postId' })
+const postId = computed(() => Number(params.value.postId))
 
 // Fetch single post using TanStack Query with repository
 const { data: post, isLoading, error } = useQuery({
@@ -23,9 +23,9 @@ const { data: post, isLoading, error } = useQuery({
 <template>
   <div class="max-w-4xl space-y-6">
     <Button variant="ghost" as-child class="gap-2">
-      <a href="/posts">
+      <Link to="/posts">
         {{ t('posts.backToPosts') }}
-      </a>
+      </Link>
     </Button>
 
     <div v-if="isLoading" class="text-muted-foreground">
