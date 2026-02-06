@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Briefcase,
   Plus,
-  MoreHorizontal,
   Edit,
   Trash2,
   Building2

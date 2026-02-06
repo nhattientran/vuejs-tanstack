@@ -1,42 +1,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "@tanstack/vue-router";
 import { Building2, Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLoginForm } from "@/composables/use-login-form";
+import { formatFormErrors } from "@/lib/utils";
 
-const router = useRouter();
-const email = ref("");
-const password = ref("");
 const showPassword = ref(false);
-const isLoading = ref(false);
-const error = ref("");
+const loginError = ref("");
 
-const handleLogin = async () => {
-  error.value = "";
-
-  if (!email.value || !password.value) {
-    error.value = "Please enter both email and password";
-    return;
-  }
-
-  isLoading.value = true;
-
-  // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // Mock authentication - in real app, call auth API
-  if (email.value === "admin@company.com" && password.value === "password") {
-    localStorage.setItem("auth_token", "mock_token");
-    router.navigate({ to: "/dashboard" });
-  } else {
-    error.value = "Invalid email or password";
-  }
-
-  isLoading.value = false;
-};
+const { form, loginSchema } = useLoginForm(loginError);
+const isSubmitting = form.useStore((state) => state.isSubmitting);
 </script>
 
 <template>
@@ -71,81 +47,118 @@ const handleLogin = async () => {
       <CardContent class="space-y-6">
         <!-- Error Message -->
         <div
-          v-if="error"
+          v-if="loginError"
           class="p-3 rounded-lg bg-destructive/10 text-destructive text-sm text-center"
         >
-          {{ error }}
+          {{ loginError }}
         </div>
 
         <!-- Login Form -->
-        <form @submit.prevent="handleLogin" class="space-y-4">
+        <form @submit.prevent.stop="form.handleSubmit" class="space-y-4">
           <!-- Email Field -->
-          <div class="space-y-2">
-            <Label for="email" class="text-sm font-medium">Email</Label>
-            <div class="relative">
-              <Mail class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                id="email"
-                v-model="email"
-                type="email"
-                placeholder="admin@company.com"
-                class="pl-10 h-12"
-                :disabled="isLoading"
-              />
-            </div>
-          </div>
+          <form.Field
+            name="email"
+            :validators="{
+              onChange: loginSchema.shape.email,
+            }"
+          >
+            <template v-slot="{ field, state }">
+              <div class="space-y-2">
+                <Label :for="field.name" class="text-sm font-medium">Email</Label>
+                <div class="relative">
+                  <Mail class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    :id="field.name"
+                    :name="field.name"
+                    :model-value="field.state.value"
+                    type="email"
+                    placeholder="admin@company.com"
+                    class="pl-10 h-12"
+                    :disabled="isSubmitting"
+                    @blur="field.handleBlur"
+                    @update:model-value="(val) => field.handleChange(val as string)"
+                  />
+                </div>
+                <p v-if="state.meta.errors.length" class="text-sm text-destructive">
+                  {{ formatFormErrors(state.meta.errors).join(', ') }}
+                </p>
+              </div>
+            </template>
+          </form.Field>
 
           <!-- Password Field -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <Label for="password" class="text-sm font-medium">Password</Label>
-              <a
-                href="#"
-                class="text-sm text-primary hover:text-primary/80 transition-colors"
-              >
-                Forgot password?
-              </a>
-            </div>
-            <div class="relative">
-              <Lock class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                id="password"
-                v-model="password"
-                :type="showPassword ? 'text' : 'password'"
-                placeholder="Enter your password"
-                class="pl-10 pr-10 h-12"
-                :disabled="isLoading"
-              />
-              <button
-                type="button"
-                @click="showPassword = !showPassword"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Eye v-if="showPassword" class="w-5 h-5" />
-                <EyeOff v-else class="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+          <form.Field
+            name="password"
+            :validators="{
+              onChange: loginSchema.shape.password,
+            }"
+          >
+            <template v-slot="{ field, state }">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <Label :for="field.name" class="text-sm font-medium">Password</Label>
+                  <a
+                    href="#"
+                    class="text-sm text-primary hover:text-primary/80 transition-colors"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+                <div class="relative">
+                  <Lock class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    :id="field.name"
+                    :name="field.name"
+                    :model-value="field.state.value"
+                    :type="showPassword ? 'text' : 'password'"
+                    placeholder="Enter your password"
+                    class="pl-10 pr-10 h-12"
+                    :disabled="isSubmitting"
+                    @blur="field.handleBlur"
+                    @update:model-value="(val) => field.handleChange(val as string)"
+                  />
+                  <button
+                    type="button"
+                    @click="showPassword = !showPassword"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <Eye v-if="showPassword" class="w-5 h-5" />
+                    <EyeOff v-else class="w-5 h-5" />
+                  </button>
+                </div>
+                <p v-if="state.meta.errors.length" class="text-sm text-destructive">
+                  {{ formatFormErrors(state.meta.errors).join(', ') }}
+                </p>
+              </div>
+            </template>
+          </form.Field>
 
           <!-- Remember Me -->
-          <div class="flex items-center gap-2">
-            <input
-              id="remember"
-              type="checkbox"
-              class="w-4 h-4 rounded border-input text-primary focus:ring-primary"
-            />
-            <Label for="remember" class="text-sm text-muted-foreground cursor-pointer">
-              Remember me for 30 days
-            </Label>
-          </div>
+          <form.Field name="rememberMe">
+            <template v-slot="{ field }">
+              <div class="flex items-center gap-2">
+                <input
+                  :id="field.name"
+                  :name="field.name"
+                  type="checkbox"
+                  :checked="field.state.value"
+                  class="w-4 h-4 rounded border-input text-primary focus:ring-primary"
+                  @change="(e) => field.handleChange((e.target as HTMLInputElement).checked)"
+                />
+                <Label :for="field.name" class="text-sm text-muted-foreground cursor-pointer">
+                  Remember me for 30 days
+                </Label>
+              </div>
+            </template>
+          </form.Field>
 
           <!-- Submit Button -->
           <Button
             type="submit"
             class="w-full h-12 text-base font-semibold"
-            :disabled="isLoading"
+            :disabled="isSubmitting"
           >
-            <span v-if="isLoading">Signing in...</span>
+            <span v-if="isSubmitting">Signing in...</span>
             <span v-else class="flex items-center gap-2">
               Sign in
               <ArrowRight class="w-5 h-5" />

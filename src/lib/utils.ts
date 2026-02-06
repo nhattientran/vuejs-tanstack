@@ -14,3 +14,17 @@ export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref
       ? updaterOrValue(ref.value)
       : updaterOrValue
 }
+
+/**
+ * Format form validation errors for display
+ * Handles both string errors and Zod error objects
+ */
+export function formatFormErrors(errors: Array<string | { message?: string } | unknown>): string[] {
+  return errors.map((err) => {
+    if (typeof err === "string") return err;
+    if (err && typeof err === "object" && "message" in err) {
+      return String(err.message);
+    }
+    return String(err);
+  });
+}
