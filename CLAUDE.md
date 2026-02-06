@@ -28,18 +28,58 @@ pnpm preview
 
 Routes are defined in `src/routes/` using a file-based convention:
 
-- `__root.tsx` - Root route layout (wraps all routes with App.vue)
-- `index.route.ts` + `index.component.vue` - Home page at `/`
-- `about.route.ts` + `about.component.vue` - About page at `/about`
-- `posts/index.route.ts` - Posts list at `/posts`
-- `posts/$postId.route.ts` - Post detail at `/posts/:postId` (dynamic route)
-- `$.route.ts` - Catch-all 404 page
+| Pattern | Purpose | Example |
+|---------|---------|---------|
+| `__root.tsx` | Root route layout | `src/routes/__root.tsx` |
+| `route.ts` | Nested layout wrapper | `admin/route.ts` |
+| `index.route.ts` + `index.component.vue` | Home page | `/` |
+| `path.route.ts` + `path.component.vue` | Standard route | `about.route.ts` |
+| `folder/index.route.ts` | Index route | `posts/index.route.ts` → `/posts` |
+| `folder/$param.route.ts` | Dynamic route | `posts/$postId.route.ts` → `/posts/:postId` |
+| `$.route.ts` | Catch-all 404 | `$.route.ts` |
 
 Each route requires two files:
 - `.route.ts` - Route configuration using `createFileRoute('/path')`
 - `.component.vue` - The Vue component (must export default)
 
 The route tree is auto-generated at `src/routeTree.gen.ts` when the dev server runs.
+
+### Layout Routes
+
+For nested layouts (e.g., `/admin` with sidebar), create `route.ts` with render function:
+
+```typescript
+// src/routes/admin/route.ts
+import { createFileRoute, Outlet, Link, useLocation } from "@tanstack/vue-router";
+import { computed, ref, h } from "vue";
+
+const AdminLayout = () => {
+  const location = useLocation();
+  const currentPath = computed(() => location.value.pathname);
+
+  return h("div", { class: "flex" }, [
+    h("aside", {}, [/* sidebar */]),
+    h("main", {}, [h(Outlet)])
+  ]);
+};
+
+export const Route = createFileRoute("/admin")({
+  component: AdminLayout,
+});
+```
+
+### Route Redirects
+
+```typescript
+// src/routes/admin/index.route.ts
+import { createFileRoute, redirect } from "@tanstack/vue-router";
+
+export const Route = createFileRoute("/admin/")({
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/dashboard" });
+  },
+});
+```
 
 ### State Management
 
@@ -109,5 +149,44 @@ const { t, locale } = useI18n()
 - Use `Link` component from `@tanstack/vue-router` for navigation (not `RouterLink`)
 - Use `Outlet` component instead of `RouterView` for route rendering
 - Access route params with `useParams({ from: '/posts/$postId' })` for type safety - params are reactive refs
+- Access current location with `useLocation()` - returns `Ref<ParsedLocation>` with `.value.pathname`
 - This project uses pnpm workspace (see `pnpm-workspace.yaml`)
 - The axios instance reads `VITE_API_BASE_URL` env variable, defaulting to `https://jsonplaceholder.typicode.com`.
+
+## Troubleshooting
+
+### Routes return 404 unexpectedly
+- Check that layout routes use `route.ts` naming (not `__root.route.ts`)
+- Delete `src/routeTree.gen.ts` and restart dev server to regenerate routes
+- Verify `createFileRoute()` path matches the actual URL path
+
+### Layout Routes with `_` Prefix
+
+Use `_layout` folder to create layout wrapper that doesn't appear in URL:
+
+```
+src/routes/
+├── _layout/
+│   ├── route.ts              # Layout component with Outlet
+│   ├── dashboard.route.ts    # → URL: /dashboard
+│   ├── employees.route.ts    # → URL: /employees
+│   └── dashboard.component.vue
+└── index.route.ts            # Redirect: / → /dashboard
+```
+
+```typescript
+// src/routes/_layout/route.ts
+export const Route = createFileRoute("/_layout")({
+  component: LayoutComponent,
+});
+
+// src/routes/_layout/dashboard.route.ts
+export const Route = createFileRoute("/_layout/dashboard")({});
+```
+
+### Regenerating Route Tree
+
+When changing route structure, delete the generated file to regenerate:
+```bash
+rm -f src/routeTree.gen.ts
+```

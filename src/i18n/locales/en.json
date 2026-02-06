@@ -11,59 +11,16 @@
     "noData": "No data available"
   },
   "nav": {
-    "home": "Home",
-    "about": "About",
-    "posts": "Posts"
+    "admin": "Admin"
   },
-  "home": {
-    "title": "Home Page",
-    "demoTitle": "TanStack Query Demo",
-    "welcomeMessage": "Welcome to Vue + TanStack!",
-    "loadedAt": "Loaded at",
-    "technologiesTitle": "Technologies Used",
-    "technologies": {
-      "vue": "Vue 3 with Composition API",
-      "typescript": "TypeScript for type safety",
-      "tailwind": "Tailwind CSS for styling",
-      "tanstackQuery": "TanStack Query for data fetching",
-      "tanstackRouter": "TanStack Router for file-based routing"
-    }
-  },
-  "about": {
-    "title": "About Page",
-    "description": "This is a Vue.js Client-Side Rendering (CSR) application built with modern technologies.",
-    "featuresTitle": "Project Features",
-    "features": {
-      "typescript": {
-        "title": "TypeScript",
-        "description": "Full type safety throughout the application"
-      },
-      "tailwind": {
-        "title": "Tailwind CSS",
-        "description": "Utility-first CSS framework for rapid UI development"
-      },
-      "tanstackQuery": {
-        "title": "TanStack Query",
-        "description": "Powerful data synchronization and caching"
-      },
-      "tanstackRouter": {
-        "title": "TanStack Router",
-        "description": "Type-safe, file-based routing system"
-      }
-    }
-  },
-  "posts": {
-    "title": "Posts",
-    "loading": "Loading posts...",
-    "errorLoading": "Error loading posts",
-    "readMore": "Read more →",
-    "noPostsFound": "No posts found",
-    "backToPosts": "← Back to Posts",
-    "loadingPost": "Loading post...",
-    "errorLoadingPost": "Error loading post",
-    "postNotFound": "Post not found",
-    "postNumber": "Post #",
-    "authorId": "Author ID"
+  "admin": {
+    "dashboard": "Dashboard",
+    "employees": "Employees",
+    "departments": "Departments",
+    "positions": "Positions",
+    "attendance": "Attendance",
+    "reports": "Reports",
+    "settings": "Settings"
   },
   "notFound": {
     "title": "Page Not Found",

@@ -1,0 +1,51 @@
+@layer utilities {
+  /* Transition Utilities */
+  .transition-micro {
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .transition-standard {
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .transition-smooth {
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Animation Enter/Exit */
+  .ease-enter {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .ease-exit {
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  /* Cursor Pointer for Interactive Elements */
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  /* Touch Target Minimum Size */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Sidebar Width */
+  .w-sidebar {
+    width: var(--sidebar-width);
+  }
+
+  .w-sidebar-mobile {
+    width: var(--sidebar-width-mobile);
+  }
+
+  /* Text Balance for Headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+}

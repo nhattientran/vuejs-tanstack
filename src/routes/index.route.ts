@@ -1,3 +1,7 @@
-import { createFileRoute } from "@tanstack/vue-router";
+import { createFileRoute, redirect } from "@tanstack/vue-router";
 
-export const Route = createFileRoute("/")({});
+export const Route = createFileRoute("/")({
+  beforeLoad: () => {
+    throw redirect({ to: "/dashboard" });
+  },
+});
