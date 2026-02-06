@@ -116,6 +116,8 @@ Uses shadcn-vue components located in `src/components/ui/`:
 - `button`, `card`, `input`, `label` are pre-installed
 - Add more with: `npx shadcn-vue@latest add <component>`
 
+**Before using shadcn-vue components:** Always check if required components (table, badge, separator, breadcrumb, etc.) are installed. Run `npx shadcn-vue@latest add <component>` proactively if missing to avoid build errors.
+
 Import pattern:
 ```typescript
 import { Button } from '@/components/ui/button'
@@ -186,38 +188,16 @@ Form validation errors from Zod are objects - use `formatFormErrors()` helper:
 
 ## Troubleshooting
 
-### Routes return 404 unexpectedly
-- Check that layout routes use `route.ts` naming (not `__root.route.ts`)
-- Delete `src/routeTree.gen.ts` and restart dev server to regenerate routes
-- Verify `createFileRoute()` path matches the actual URL path
+| Issue | Documentation |
+|-------|---------------|
+| Routing problems | `docs/troubleshooting/routing.md` |
+| Debugging guidelines | `docs/troubleshooting/debugging.md` |
 
-### Layout Routes with `_` Prefix
+## Additional Documentation
 
-Use `_layout` folder to create layout wrapper that doesn't appear in URL:
-
-```
-src/routes/
-├── _layout/
-│   ├── route.ts              # Layout component with Outlet
-│   ├── dashboard.route.ts    # → URL: /dashboard
-│   ├── employees.route.ts    # → URL: /employees
-│   └── dashboard.component.vue
-└── index.route.ts            # Redirect: / → /dashboard
-```
-
-```typescript
-// src/routes/_layout/route.ts
-export const Route = createFileRoute("/_layout")({
-  component: LayoutComponent,
-});
-
-// src/routes/_layout/dashboard.route.ts
-export const Route = createFileRoute("/_layout/dashboard")({});
-```
-
-### Regenerating Route Tree
-
-When changing route structure, delete the generated file to regenerate:
-```bash
-rm -f src/routeTree.gen.ts
-```
+| Topic | Location |
+|-------|----------|
+| Git worktree workflows | `docs/workflows/git-workflows.md` |
+| Debugging guidelines | `docs/troubleshooting/debugging.md` |
+| Vue.js patterns | `docs/patterns/vue-patterns.md` |
+| Design system implementation | `docs/patterns/design-system.md` |
