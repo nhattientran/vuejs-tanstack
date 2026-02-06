@@ -137,6 +137,37 @@ Use the `useI18n` composable in components:
 const { t, locale } = useI18n()
 ```
 
+### Forms
+
+Uses `@tanstack/vue-form` with Zod for form state and validation:
+```typescript
+import { useForm } from "@tanstack/vue-form"
+import { z } from "zod"
+
+const form = useForm({
+  defaultValues: { email: "", password: "" },
+  onSubmit: async ({ value }) => { /* handle submit */ }
+})
+```
+
+Field validation with Zod schema:
+```vue
+<form.Field
+  name="email"
+  :validators="{ onChange: z.string().email() }"
+>
+```
+
+Form validation errors from Zod are objects - use `formatFormErrors()` helper:
+```vue
+<p v-if="state.meta.errors.length" class="text-sm text-destructive">
+  {{ formatFormErrors(state.meta.errors).join(', ') }}
+</p>
+```
+
+**Form Logic:** Extract form setup into composables in `src/composables/`:
+- `use-login-form.ts` - Login form with TanStack Form configuration
+
 ## Key Configuration Files
 
 - `vite.config.ts` - Vite + TanStack Router plugin + Tailwind CSS plugin
