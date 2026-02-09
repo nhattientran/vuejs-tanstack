@@ -33,3 +33,4 @@ typed-router.d.ts
 /.shared
 /plans
 src/routeTree.gen.ts
+/.tanstack

@@ -30,13 +30,14 @@ Routes are defined in `src/routes/` using a file-based convention:
 
 | Pattern | Purpose | Example |
 |---------|---------|---------|
-| `__root.tsx` | Root route layout | `src/routes/__root.tsx` |
+| `__root.ts` | Root route config | `src/routes/__root.ts` |
+| `__root.component.vue` | Root layout component | `src/routes/__root.component.vue` |
+| `__root.notFoundComponent.vue` | Global 404 component | `src/routes/__root.notFoundComponent.vue` |
 | `route.ts` | Nested layout wrapper | `admin/route.ts` |
 | `index.route.ts` + `index.component.vue` | Home page | `/` |
 | `path.route.ts` + `path.component.vue` | Standard route | `about.route.ts` |
 | `folder/index.route.ts` | Index route | `posts/index.route.ts` → `/posts` |
 | `folder/$param.route.ts` | Dynamic route | `posts/$postId.route.ts` → `/posts/:postId` |
-| `$.route.ts` | Catch-all 404 | `$.route.ts` |
 
 Each route requires two files:
 - `.route.ts` - Route configuration using `createFileRoute('/path')`
@@ -46,25 +47,46 @@ The route tree is auto-generated at `src/routeTree.gen.ts` when the dev server r
 
 ### Layout Routes
 
-For nested layouts (e.g., `/admin` with sidebar), create `route.ts` with render function:
+For nested layouts, create `route.ts` that imports component from outside routes folder:
 
 ```typescript
 // src/routes/admin/route.ts
-import { createFileRoute, Outlet, Link, useLocation } from "@tanstack/vue-router";
-import { computed, ref, h } from "vue";
-
-const AdminLayout = () => {
-  const location = useLocation();
-  const currentPath = computed(() => location.value.pathname);
-
-  return h("div", { class: "flex" }, [
-    h("aside", {}, [/* sidebar */]),
-    h("main", {}, [h(Outlet)])
-  ]);
-};
+import { createFileRoute } from "@tanstack/vue-router";
+import AdminLayout from "@/components/layout/admin-layout.vue";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
+});
+```
+
+**Important:** Do not name layout files with `.component.vue` suffix inside routes folder - TanStack Router will treat them as routes. Move to `src/components/layout/` instead.
+
+### Global 404 Page
+
+Use `__root.notFoundComponent.vue` for global 404 (replaces `$.route.ts`):
+
+```typescript
+// src/routes/__root.ts
+import { createRootRoute } from "@tanstack/vue-router";
+import RootComponent from "./__root.component.vue";
+import NotFoundComponent from "./__root.notFoundComponent.vue";
+
+export const Route = createRootRoute({
+  component: RootComponent,
+  notFoundComponent: NotFoundComponent,
+});
+```
+
+### Route Configuration Pattern
+
+Every `.route.ts` must import and export its component:
+
+```typescript
+import { createFileRoute } from "@tanstack/vue-router";
+import DashboardComponent from "./dashboard.component.vue";
+
+export const Route = createFileRoute("/admin/dashboard")({
+  component: DashboardComponent,
 });
 ```
 

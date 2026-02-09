@@ -9,7 +9,7 @@ const router = useRouter();
 </script>
 
 <template>
-  <div class="min-h-[80vh] w-full flex items-center justify-center relative overflow-hidden bg-background">
+  <div class="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-background">
     <!-- Animated Background Blobs -->
     <div
       class="absolute top-1/2 left-1/4 -translate-y-1/2 w-72 h-72 bg-blue-500/30 dark:bg-blue-600/20 rounded-full blur-[100px] animate-pulse-slow">
@@ -42,7 +42,7 @@ const router = useRouter();
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button as-child size="lg"
             class="w-full sm:w-auto font-semibold shadow-lg hover:shadow-primary/25 transition-all duration-300">
-            <Link to="/admin">
+            <Link to="/">
               <HomeIcon class="mr-2 h-4 w-4" />
               {{ t('notFound.backHome') }}
             </Link>
